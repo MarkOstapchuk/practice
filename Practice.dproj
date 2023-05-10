@@ -98,9 +98,15 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Unit1.pas">
-            <Form>Form1</Form>
+        <DCCReference Include="Main_U.pas">
+            <Form>App</Form>
             <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="addGrades_U.pas">
+            <Form>addGradesForm</Form>
+        </DCCReference>
+        <DCCReference Include="addStudents_U.pas">
+            <Form>addStudentsForm</Form>
         </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
