@@ -108,6 +108,14 @@
         <DCCReference Include="addStudents_U.pas">
             <Form>addStudentsForm</Form>
         </DCCReference>
+        <DCCReference Include="addGroup_U.pas">
+            <Form>addGroupForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
+        <DCCReference Include="infoGroup_U.pas">
+            <Form>infoGroupForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

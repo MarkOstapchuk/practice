@@ -4,7 +4,9 @@ uses
   Vcl.Forms,
   Main_U in 'Main_U.pas' {App},
   addGrades_U in 'addGrades_U.pas' {addGradesForm},
-  addStudents_U in 'addStudents_U.pas' {addStudentsForm};
+  addStudents_U in 'addStudents_U.pas' {addStudentsForm},
+  addGroup_U in 'addGroup_U.pas' {addGroupForm},
+  infoGroup_U in 'infoGroup_U.pas' {infoGroupForm};
 
 {$R *.res}
 
@@ -14,6 +16,8 @@ begin
   Application.CreateForm(TApp, App);
   Application.CreateForm(TaddGradesForm, addGradesForm);
   Application.CreateForm(TaddStudentsForm, addStudentsForm);
+  Application.CreateForm(TaddGroupForm, addGroupForm);
+  Application.CreateForm(TinfoGroupForm, infoGroupForm);
   Application.Run;
 
 end.

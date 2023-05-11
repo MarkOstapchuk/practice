@@ -15,45 +15,31 @@ object addStudentsForm: TaddStudentsForm
   PixelsPerInch = 96
   TextHeight = 13
   object FirstNameEdit: TEdit
-    Left = 248
+    Left = 240
     Top = 88
-    Width = 121
+    Width = 145
     Height = 21
     TabOrder = 1
-    OnEnter = FirstNameEditEnter
-    OnExit = FirstNameEditExit
+    TextHint = #1048#1084#1103
     OnKeyPress = CheckLetterPress
   end
   object LastNameEdit: TEdit
-    Left = 248
+    Left = 240
     Top = 48
-    Width = 121
+    Width = 145
     Height = 21
     TabOrder = 0
-    OnEnter = LastNameEditEnter
-    OnExit = LastNameEditExit
+    TextHint = #1060#1072#1084#1080#1083#1080#1103
     OnKeyPress = CheckLetterPress
   end
   object MiddleNameEdit: TEdit
-    Left = 248
+    Left = 240
     Top = 128
-    Width = 121
+    Width = 145
     Height = 21
     TabOrder = 2
-    OnEnter = MiddleNameEditEnter
-    OnExit = MiddleNameEditExit
+    TextHint = #1054#1090#1095#1077#1089#1090#1074#1086
     OnKeyPress = CheckLetterPress
-  end
-  object GroupEdit: TEdit
-    Left = 248
-    Top = 176
-    Width = 121
-    Height = 21
-    MaxLength = 6
-    NumbersOnly = True
-    TabOrder = 3
-    OnEnter = GroupEditEnter
-    OnExit = GroupEditExit
   end
   object addGradesBtn: TButton
     Left = 248
@@ -61,16 +47,33 @@ object addStudentsForm: TaddStudentsForm
     Width = 121
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1094#1077#1085#1082#1080
-    TabOrder = 4
+    TabOrder = 3
     OnClick = addGradesBtnClick
   end
   object confirmBtn: TButton
-    Left = 248
+    Left = 320
     Top = 258
     Width = 121
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-    TabOrder = 5
+    TabOrder = 4
     OnClick = confirmBtnClick
+  end
+  object GroupsCmb: TComboBox
+    Left = 240
+    Top = 168
+    Width = 145
+    Height = 21
+    TabOrder = 5
+    TextHint = #1043#1088#1091#1087#1087#1072
+  end
+  object CancelBtn: TButton
+    Left = 184
+    Top = 258
+    Width = 105
+    Height = 25
+    Caption = #1054#1090#1084#1077#1085#1080#1090#1100
+    TabOrder = 6
+    OnClick = CancelBtnClick
   end
 end

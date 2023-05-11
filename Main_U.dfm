@@ -11,6 +11,7 @@ object App: TApp
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
@@ -63,8 +64,10 @@ object App: TApp
     Top = 48
     Width = 145
     Height = 21
+    Style = csDropDownList
     TabOrder = 2
-    Text = 'GroupsCmb'
+    TextHint = #1042#1099#1073#1086#1088' '#1075#1088#1091#1087#1087#1099
+    OnChange = GroupsCmbChange
   end
   object addNewGroupBtn: TButton
     Left = 40
@@ -73,6 +76,7 @@ object App: TApp
     Height = 21
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1085#1086#1074#1091#1102' '#1075#1088#1091#1087#1087#1091
     TabOrder = 3
+    OnClick = addNewGroupBtnClick
   end
   object editStudentBtn: TButton
     Left = 160
@@ -112,7 +116,9 @@ object App: TApp
     Width = 137
     Height = 25
     Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1075#1088#1091#1087#1087#1077
+    Enabled = False
     TabOrder = 8
+    OnClick = GroupInfoBtnClick
   end
   object showStudentsGroupBtn: TButton
     Left = 600
