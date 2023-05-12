@@ -22,6 +22,7 @@ type
 	procedure addGradesBtnClick(Sender: TObject);
 	procedure FormShow(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
+    procedure EditChange(Sender: TObject);
   private
 	{ Private declarations }
   public
@@ -43,9 +44,9 @@ var
 begin
   with newStudent do
   begin
-	FirstName := FirstNameEdit.Text;
-	LastName := LastNameEdit.Text;
-	MiddleName := MiddleNameEdit.Text;
+	FirstName := Trim(FirstNameEdit.Text);
+	LastName := Trim(LastNameEdit.Text);
+	MiddleName := Trim(MiddleNameEdit.Text);
 	Group := GroupsCmb.Items[GroupsCmb.ItemIndex];
   end;
   if newStudent.GradesCount = 0 then
@@ -63,21 +64,31 @@ begin
   Self.Close;
 end;
 
+procedure TaddStudentsForm.EditChange(Sender: TObject);
+begin
+confirmBtn.Enabled := (Length(Trim(FirstNameEdit.Text)) > 0) and (Length(Trim(LastNameEdit.Text)) > 0) and
+(GroupsCmb.ItemIndex >= 0);
+end;
+
 procedure TaddStudentsForm.FormShow(Sender: TObject);
 var
   node: PGroup;
 begin
+  GroupsCmb.Items.Clear;
   node := App.GroupHead;
   while not(node.Next = nil) do
   begin
 	node := node.Next;
 	GroupsCmb.Items.Add(node.Data.Group);
   end;
+  if GroupsCmb.Items.Count > 0 then
+  GroupsCmb.ItemIndex := 0;
   if node = App.GroupHead then
   begin
 	GroupsCmb.Items.Add('Нет добавленных групп');
 	confirmBtn.Enabled := false;
   end;
+  confirmBtn.Enabled := false;
   FirstNameEdit.Text := '';
   LastNameEdit.Text := '';
   MiddleNameEdit.Text := '';

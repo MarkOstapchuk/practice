@@ -57,7 +57,7 @@ begin
   I := 0;
   while (I < GradesCount) and (not result) do
   begin
-	if LowerCase(subject) = LowerCase(Grades[I].subject) then
+	if AnsiLowerCase(Trim(subject)) = AnsiLowerCase(Trim(Grades[I].subject)) then
 	  result := true;
 	Inc(I);
   end;
@@ -72,7 +72,7 @@ begin
   I := 0;
   while (I < SubjectsCount) and (not result) do
   begin
-	if LowerCase(subject) = LowerCase(Subjects[I]) then
+	if AnsiLowerCase(Trim(subject)) = AnsiLowerCase(Trim(Subjects[I])) then
 	  result := true;
 	Inc(I);
   end;
@@ -139,8 +139,7 @@ var
   Item: TListItem;
   newGrade: TGrade;
 begin
-  if SubjectsCmb.ItemIndex = 0 then
-	if isSubjectExist(addSubjectEdit.Text) then
+	if (SubjectsCmb.ItemIndex = 0) and (isSubjectExist(addSubjectEdit.Text)) then
 	  ShowMessage('Данная дисциплина уже добавлена.')
 	else if (StrToInt(gradeEdit.Text) > 10) or (StrToInt(gradeEdit.Text) < 0)
 	then

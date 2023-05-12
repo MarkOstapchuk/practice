@@ -79,7 +79,7 @@ object infoGroupForm: TinfoGroupForm
   end
   object CodeEdit: TMaskEdit
     Left = 224
-    Top = 117
+    Top = 109
     Width = 145
     Height = 21
     TabStop = False

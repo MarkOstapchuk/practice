@@ -6,7 +6,8 @@ uses
   addGrades_U in 'addGrades_U.pas' {addGradesForm},
   addStudents_U in 'addStudents_U.pas' {addStudentsForm},
   addGroup_U in 'addGroup_U.pas' {addGroupForm},
-  infoGroup_U in 'infoGroup_U.pas' {infoGroupForm};
+  infoGroup_U in 'infoGroup_U.pas' {infoGroupForm},
+  infoStudent_U in 'infoStudent_U.pas' {infoStudentForm};
 
 {$R *.res}
 
@@ -18,6 +19,7 @@ begin
   Application.CreateForm(TaddStudentsForm, addStudentsForm);
   Application.CreateForm(TaddGroupForm, addGroupForm);
   Application.CreateForm(TinfoGroupForm, infoGroupForm);
+  Application.CreateForm(TinfoStudentForm, infoStudentForm);
   Application.Run;
 
 end.

@@ -19,8 +19,10 @@ object addStudentsForm: TaddStudentsForm
     Top = 88
     Width = 145
     Height = 21
+    MaxLength = 30
     TabOrder = 1
     TextHint = #1048#1084#1103
+    OnChange = EditChange
     OnKeyPress = CheckLetterPress
   end
   object LastNameEdit: TEdit
@@ -28,8 +30,10 @@ object addStudentsForm: TaddStudentsForm
     Top = 48
     Width = 145
     Height = 21
+    MaxLength = 30
     TabOrder = 0
     TextHint = #1060#1072#1084#1080#1083#1080#1103
+    OnChange = EditChange
     OnKeyPress = CheckLetterPress
   end
   object MiddleNameEdit: TEdit
@@ -37,8 +41,10 @@ object addStudentsForm: TaddStudentsForm
     Top = 128
     Width = 145
     Height = 21
+    MaxLength = 30
     TabOrder = 2
     TextHint = #1054#1090#1095#1077#1089#1090#1074#1086
+    OnChange = EditChange
     OnKeyPress = CheckLetterPress
   end
   object addGradesBtn: TButton
@@ -47,16 +53,16 @@ object addStudentsForm: TaddStudentsForm
     Width = 121
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1094#1077#1085#1082#1080
-    TabOrder = 3
+    TabOrder = 4
     OnClick = addGradesBtnClick
   end
   object confirmBtn: TButton
-    Left = 320
+    Left = 328
     Top = 258
     Width = 121
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100
-    TabOrder = 4
+    TabOrder = 5
     OnClick = confirmBtnClick
   end
   object GroupsCmb: TComboBox
@@ -64,8 +70,9 @@ object addStudentsForm: TaddStudentsForm
     Top = 168
     Width = 145
     Height = 21
-    TabOrder = 5
+    TabOrder = 3
     TextHint = #1043#1088#1091#1087#1087#1072
+    OnChange = EditChange
   end
   object CancelBtn: TButton
     Left = 184
