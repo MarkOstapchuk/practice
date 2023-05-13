@@ -120,6 +120,8 @@ FirstNameEdit.Enabled := false;
   GroupEdit.Visible := true;
   GroupsCmb.Items.Clear;
   Index := App.StudentsList.ItemIndex;
+  if App.isFiltered then
+  node := App.displayedHead else
   node := App.Head;
   for i := 0 to index do
 	node := node.Next;

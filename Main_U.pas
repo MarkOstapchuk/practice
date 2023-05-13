@@ -4,9 +4,10 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics,CommCtrl,
+  System.Classes, Vcl.Graphics, CommCtrl,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
-  System.ImageList, Vcl.ImgList, Vcl.ExtCtrls;
+  System.ImageList, Vcl.ImgList, Vcl.ExtCtrls, Vcl.Menus, System.Actions,
+  Vcl.ActnList;
 
 const
   studentsPath = '..\..\assets\students.txt';
@@ -18,7 +19,7 @@ type
 
   TGrade = record
 	Subject: ShortString;
-	Grade: Byte;
+	Grade: shortInt;
   end;
 
   TGrades = array [0 .. 9] of TGrade;
@@ -69,7 +70,23 @@ type
 	FirstNameEdit: TEdit;
 	LastNameEdit: TEdit;
 	MiddleNameEdit: TEdit;
-    showAllStudentsBtn: TButton;
+	showAllStudentsBtn: TButton;
+	MainMenu: TMainMenu;
+	fileOptions: TMenuItem;
+	SaveFIle: TMenuItem;
+	ExitApp: TMenuItem;
+	ImageList: TImageList;
+	ActionList1: TActionList;
+	SaveAction: TAction;
+	ExitAction: TAction;
+	N1: TMenuItem;
+	expulsionList: TMenuItem;
+	debtorsList: TMenuItem;
+	expulsionListAction: TAction;
+	debtorsListAction: TAction;
+	N2: TMenuItem;
+	saveListAction: TAction;
+	OpenDialog1: TOpenDialog;
 	procedure FormCreate(Sender: TObject);
 
 	procedure addStudentBtnClick(Sender: TObject);
@@ -82,7 +99,6 @@ type
 	procedure loadStudents(path: string);
 	procedure ShowStudents(Head: PStudent);
 
-
 	procedure addNewGroupBtnClick(Sender: TObject);
 
 	procedure addNewGroup(GroupData: TGroupData);
@@ -90,12 +106,12 @@ type
 	procedure ChangeGroupInfo(Data: TGroupData);
 	procedure DeleteGroup;
 	procedure saveGroupsToFile(path: string);
-    procedure changeGroupCount(group: shortString; delta: integer);
+	procedure changeGroupCount(Group: ShortString; delta: Integer);
 	procedure loadGroups(path: string);
 	procedure showGroups;
 
 	procedure sort(comparator: TComporator);
-    procedure filterGroup(group: shortString);
+	procedure filterGroup(Group: ShortString);
 
 	procedure GroupInfoBtnClick(Sender: TObject);
 	procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -104,10 +120,15 @@ type
 	procedure StudentsListChange(Sender: TObject; Item: TListItem;
 	  Change: TItemChange);
 	procedure SearchStudentBtnClick(Sender: TObject);
-	procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+	// procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
 	procedure StudentsListColumnClick(Sender: TObject; Column: TListColumn);
-    procedure showStudentsGroupBtnClick(Sender: TObject);
-    procedure showAllStudentsBtnClick(Sender: TObject);
+	procedure showStudentsGroupBtnClick(Sender: TObject);
+	procedure showAllStudentsBtnClick(Sender: TObject);
+	procedure SaveActionExecute(Sender: TObject);
+	procedure ExitActionExecute(Sender: TObject);
+	procedure expulsionListActionExecute(Sender: TObject);
+	procedure debtorsListActionExecute(Sender: TObject);
+	procedure saveListActionExecute(Sender: TObject);
 
   private
 	{ Private declarations }
@@ -115,8 +136,9 @@ type
 	wasSaved: boolean;
 	Head: PStudent;
 	GroupHead: PGroup;
-    displayedHead: PStudent;
-    isFiltered: boolean;
+	displayedHead: PStudent;
+	expulsionHead: PStudent;
+	isFiltered: boolean;
   end;
 
 var
@@ -129,8 +151,8 @@ uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U;
 
 procedure TApp.showAllStudentsBtnClick(Sender: TObject);
 begin
- isFiltered := false;
- showStudents(Head);
+  isFiltered := false;
+  ShowStudents(Head);
 end;
 
 procedure TApp.showGroups;
@@ -195,12 +217,18 @@ procedure TApp.addNewGroupBtnClick(Sender: TObject);
 begin
   addGroupForm.ShowModal;
 end;
+
 procedure TApp.addNewStudent(Data: TStudentData);
 var
   id: Integer;
 var
   node: PStudent;
 begin
+  if isFiltered then
+  begin
+	ShowStudents(Head);
+	isFiltered := false;
+  end;
   node := Head;
   while not(node.Next = nil) do
 	node := node.Next;
@@ -232,12 +260,52 @@ begin
   wasSaved := false;
 end;
 
+procedure TApp.debtorsListActionExecute(Sender: TObject);
+var
+  node, newNode: PStudent;
+  i: Integer;
+  flag: boolean;
+begin
+  new(expulsionHead);
+  newNode := expulsionHead;
+  node := Head;
+  while not(node.Next = nil) do
+  begin
+	node := node.Next;
+	flag := false;
+	for i := 0 to node.Data.GradesCount - 1 do
+	begin
+	  if node.Data.Grades[i].Grade < 0 then
+		flag := true;
+	end;
+	if flag then
+	begin
+	  new(newNode.Next);
+	  newNode := newNode.Next;
+	  newNode.Data := node.Data;
+	end;
+  end;
+  newNode.Next := nil;
+  if expulsionHead.Next = nil then
+	ShowMessage('Студентов с задолжностями нет.')
+  else
+  begin
+	displayedHead := expulsionHead;
+	isFiltered := true;
+	ShowStudents(displayedHead);
+  end;
+
+end;
+
 procedure TApp.deleteStudent;
 var
   node: PStudent;
   i, index: Integer;
 begin
-  node := Head;
+  if isFiltered then
+	node := displayedHead
+  else
+	node := Head;
   if StudentsList.ItemIndex = 0 then
   begin
 	if node.Next.Next = nil then
@@ -250,13 +318,14 @@ begin
 	index := StudentsList.ItemIndex - 1;
 	for i := 0 to index do
 	  node := node.Next;
-    changeGroupCount(node.Next.Data.Group, -1);
+	changeGroupCount(node.Next.Data.Group, -1);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
 	  node.Next := node.Next.Next;
   end;
   ShowStudents(Head);
+  isFiltered := false;
   wasSaved := false;
 end;
 
@@ -320,101 +389,120 @@ end;
 
 function compareByNameUp(a, b: TStudentData): boolean;
 begin
-  result := a.LastName + ' ' + a.FirstName + ' ' + a.MiddleName > b.LastName + ' ' + b.FirstName + ' ' + b.MiddleName
-end;
-function compareByNameDown(a, b: TStudentData): boolean;
-begin
-  result := a.LastName + ' ' + a.FirstName + ' ' + a.MiddleName < b.LastName + ' ' + b.FirstName + ' ' + b.MiddleName
-end;
-function compareByGradeUp(a, b: TStudentData): boolean;
-begin
-	if a.avgGrade = '-' then result:=true else
-    if b.AvgGrade = '-' then result:=false else
-  result := a.avgGrade > b.avgGrade
-end;
-function compareByGradeDown(a, b: TStudentData): boolean;
-begin
-  if a.avgGrade = '-' then result:=true else
-    if b.AvgGrade = '-' then result:=false else
-  result := a.avgGrade < b.avgGrade
-end;
-function compareByGroupUp(a, b: TStudentData): boolean;
-begin
-  result := a.group > b.group;
-end;
-function compareByGroupDown(a, b: TStudentData): boolean;
-begin
-  result := a.group < b.group;
+  result := AnsiLowerCase(a.LastName + ' ' + a.FirstName + ' ' + a.MiddleName) >
+	AnsiLowerCase(b.LastName + ' ' + b.FirstName + ' ' + b.MiddleName)
 end;
 
+function compareByNameDown(a, b: TStudentData): boolean;
+begin
+  result := a.LastName + ' ' + a.FirstName + ' ' + a.MiddleName < b.LastName +
+	' ' + b.FirstName + ' ' + b.MiddleName
+end;
+
+function compareByGradeUp(a, b: TStudentData): boolean;
+begin
+  if a.AvgGrade = '-' then
+	result := true
+  else if b.AvgGrade = '-' then
+	result := false
+  else
+	result := a.AvgGrade > b.AvgGrade
+end;
+
+function compareByGradeDown(a, b: TStudentData): boolean;
+begin
+  if a.AvgGrade = '-' then
+	result := true
+  else if b.AvgGrade = '-' then
+	result := false
+  else
+	result := a.AvgGrade < b.AvgGrade
+end;
+
+function compareByGroupUp(a, b: TStudentData): boolean;
+begin
+  result := a.Group > b.Group;
+end;
+
+function compareByGroupDown(a, b: TStudentData): boolean;
+begin
+  result := a.Group < b.Group;
+end;
 
 procedure TApp.showStudentsGroupBtnClick(Sender: TObject);
 begin
-filterGroup(GroupsCmb.Items[GroupsCmb.ItemIndex]);
-isFiltered := true;
+  filterGroup(GroupsCmb.Items[GroupsCmb.ItemIndex]);
+  isFiltered := true;
 end;
 
 procedure TApp.sort(comparator: TComporator);
 var
-  Tempfirst, j, LAst, start, currHead: pSTudent;
-  temp1, temp2: pSTudent;
+  Tempfirst, j, LAst, start, currHead: PStudent;
+  temp1, temp2: PStudent;
 begin
   LAst := nil;
-  if isFiltered then currHead := DisplayedHead else currHead := Head;
-  start := currHead;
-  while currHead^.NExt^.NExt <> LAst do
+  if isFiltered then
+	currHead := displayedHead
+  else
+	currHead := Head;
+  if not(currHead.Next = nil) then
   begin
-    j := currHead^.NExt;
-    while j^.NExt <> LAst do
-    begin
-      if comparator(j.Data, j^.Next.Data) then
-      begin
-        temp1 := j;
-        temp2 := j^.NExt^.NExt;
-        j := j^.NExt;
-        j^.NExt := temp1;
-        j^.NExt^.NExt := temp2;
-      end;
-      currHead^.NExt := j;
-      j := j^.NExt;
-      currHead := currHead^.NExt;
-    end;
-    LAst := j;
-    currHead := start;
+	start := currHead;
+	while currHead^.Next^.Next <> LAst do
+	begin
+	  j := currHead^.Next;
+	  while j^.Next <> LAst do
+	  begin
+		if comparator(j.Data, j^.Next.Data) then
+		begin
+		  temp1 := j;
+		  temp2 := j^.Next^.Next;
+		  j := j^.Next;
+		  j^.Next := temp1;
+		  j^.Next^.Next := temp2;
+		end;
+		currHead^.Next := j;
+		j := j^.Next;
+		currHead := currHead^.Next;
+	  end;
+	  LAst := j;
+	  currHead := start;
+	end;
   end;
 end;
 
-procedure TApp.filterGroup(group: shortString);
-var node,displayedNode: PStudent;
+procedure TApp.filterGroup(Group: ShortString);
+var
+  node, displayedNode: PStudent;
 begin
-   node := Head;
-   new(displayedHead);
-   displayedNode := displayedHead;
-   while not (node.Next = nil) do
-   begin
-     node := node.Next;
-     if node.Data.Group = group then
-     begin
-       new(displayedNode.Next);
-       displayedNode := displayedNode.Next;
-       displayedNode.Data := node.Data;
-     end;
-   end;
-   displayedNode.Next := nil;
-   showStudents(displayedHead);
-end;
-
-
-procedure TApp.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
-begin
-  if (ssCtrl in Shift) and (Key = Ord('S')) and (wasSaved = false) then
+  node := Head;
+  new(displayedHead);
+  displayedNode := displayedHead;
+  while not(node.Next = nil) do
   begin
-	wasSaved := true;
-	saveGroupsToFile(groupsPath);
-	saveStudentsToFile(studentsPath);
-	Key := 0;
+	node := node.Next;
+	if node.Data.Group = Group then
+	begin
+	  new(displayedNode.Next);
+	  displayedNode := displayedNode.Next;
+	  displayedNode.Data := node.Data;
+	end;
   end;
+  displayedNode.Next := nil;
+  ShowStudents(displayedHead);
 end;
+
+//
+// procedure TApp.FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
+// begin
+// if (ssCtrl in Shift) and (Key = Ord('S')) and (wasSaved = false) then
+// begin
+// wasSaved := true;
+// saveGroupsToFile(groupsPath);
+// saveStudentsToFile(studentsPath);
+// Key := 0;
+// end;
+// end;
 
 procedure TApp.GroupInfoBtnClick(Sender: TObject);
 begin
@@ -464,9 +552,10 @@ begin
   while not(node.Next = nil) do
   begin
 	node := node.Next;
-	if (AnsiLowerCase(node.Data.FirstName) = AnsiLowerCase(Trim(FirstNameEdit.Text)))
-	  and (AnsiLowerCase(node.Data.LastName) = AnsiLowerCase(Trim(LastNameEdit.Text)))
-	  and (AnsiLowerCase(node.Data.MiddleName)
+	if (AnsiLowerCase(node.Data.FirstName)
+	  = AnsiLowerCase(Trim(FirstNameEdit.Text))) and
+	  (AnsiLowerCase(node.Data.LastName) = AnsiLowerCase(Trim(LastNameEdit.Text)
+	  )) and (AnsiLowerCase(node.Data.MiddleName)
 	  = AnsiLowerCase(Trim(MiddleNameEdit.Text))) then
 	begin
 	  new(resIndex.Next);
@@ -514,6 +603,58 @@ end;
 procedure TApp.ShowNewGroup(Group: ShortString);
 begin
   GroupsCmb.Items.Add(Group);
+end;
+
+procedure TApp.SaveActionExecute(Sender: TObject);
+begin
+  if wasSaved = false then
+  begin
+	wasSaved := true;
+	saveGroupsToFile(groupsPath);
+	saveStudentsToFile(studentsPath);
+  end;
+end;
+
+procedure TApp.ExitActionExecute(Sender: TObject);
+begin
+  self.Close;
+end;
+
+procedure TApp.expulsionListActionExecute(Sender: TObject);
+var
+  node, newNode: PStudent;
+  i: Integer;
+  Count: Byte;
+begin
+  new(expulsionHead);
+  newNode := expulsionHead;
+  node := Head;
+  while not(node.Next = nil) do
+  begin
+	node := node.Next;
+	Count := 0;
+	for i := 0 to node.Data.GradesCount - 1 do
+	begin
+	  if node.Data.Grades[i].Grade < 5 then
+		Inc(Count);
+	end;
+	if Count = 3 then
+	begin
+	  new(newNode.Next);
+	  newNode := newNode.Next;
+	  newNode.Data := node.Data;
+	end;
+  end;
+  newNode.Next := nil;
+  if expulsionHead.Next = nil then
+	ShowMessage('Студентов для отчисления нет.')
+  else
+  begin
+	displayedHead := expulsionHead;
+	isFiltered := true;
+	ShowStudents(displayedHead);
+  end;
+
 end;
 
 procedure TApp.addNewGroup(GroupData: TGroupData);
@@ -572,71 +713,81 @@ begin
   wasSaved := false;
 end;
 
-
-
 procedure TApp.StudentsListColumnClick(Sender: TObject; Column: TListColumn);
-var initCaption: TCaption;
+var
+  initCaption: TCaption;
 begin
 
   case Column.index of
 	1:
 	  begin
-        initCaption := 'ФИО';
-        StudentsList.Columns[2].Caption := 'Группа';
-        StudentsList.Columns[3].Caption := 'Средний балл';
-        if (column.Caption = initCaption) or (column.Caption = initCaption + ' ' + Chr(9660)) then
-        begin
-        column.Caption := initCaption + ' ' + Chr(9650);
-        sort(compareByNameUp);
-        end else
-        begin
-        column.Caption := initCaption + ' ' + Chr(9660);
-        sort(compareByNameDown);
-        end;
+		initCaption := 'ФИО';
+		StudentsList.Columns[2].Caption := 'Группа';
+		StudentsList.Columns[3].Caption := 'Средний балл';
+		if (Column.Caption = initCaption) or
+		  (Column.Caption = initCaption + ' ' + Chr(9660)) then
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9650);
+		  sort(compareByNameUp);
+		end
+		else
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9660);
+		  sort(compareByNameDown);
+		end;
 	  end;
-    2:
-      begin
-      initCaption := 'Группа';
-      StudentsList.Columns[1].Caption := 'ФИО';
-        StudentsList.Columns[3].Caption := 'Средний балл';
-      if (column.Caption = initCaption) or (column.Caption = initCaption + ' ' + Chr(9660)) then
-        begin
-        column.Caption := initCaption + ' ' + Chr(9650);
-        sort(compareByGroupUp);
-        end else
-        begin
-        column.Caption := initCaption + ' ' + Chr(9660);
-        sort(compareByGroupDown);
-        end;
-      end;
-    3:
-      begin
-      initCaption := 'Средний балл';
-      StudentsList.Columns[2].Caption := 'Группа';
-        StudentsList.Columns[1].Caption := 'ФИО';
-      if (column.Caption = initCaption) or (column.Caption = initCaption + ' ' + Chr(9660)) then
-        begin
-        column.Caption := initCaption + ' ' + Chr(9650);
-        sort(compareByGradeUp);
-        end else
-        begin
-        column.Caption := initCaption + ' ' + Chr(9660);
-        sort(compareByGradeDown);
-        end;
-      end;
+	2:
+	  begin
+		initCaption := 'Группа';
+		StudentsList.Columns[1].Caption := 'ФИО';
+		StudentsList.Columns[3].Caption := 'Средний балл';
+		if (Column.Caption = initCaption) or
+		  (Column.Caption = initCaption + ' ' + Chr(9660)) then
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9650);
+		  sort(compareByGroupUp);
+		end
+		else
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9660);
+		  sort(compareByGroupDown);
+		end;
+	  end;
+	3:
+	  begin
+		initCaption := 'Средний балл';
+		StudentsList.Columns[2].Caption := 'Группа';
+		StudentsList.Columns[1].Caption := 'ФИО';
+		if (Column.Caption = initCaption) or
+		  (Column.Caption = initCaption + ' ' + Chr(9660)) then
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9650);
+		  sort(compareByGradeUp);
+		end
+		else
+		begin
+		  Column.Caption := initCaption + ' ' + Chr(9660);
+		  sort(compareByGradeDown);
+		end;
+	  end;
   end;
-  if isFiltered then ShowStudents(DisplayedHead) else ShowStudents(Head);
+  if isFiltered then
+	ShowStudents(displayedHead)
+  else
+	ShowStudents(Head);
 end;
-procedure Tapp.changeGroupCount(group: shortString; delta: integer);
-var node: PGroup;
+
+procedure TApp.changeGroupCount(Group: ShortString; delta: Integer);
+var
+  node: PGroup;
 begin
-   node := groupHead;
-   while not (node.Next = nil) do
-   begin
-     node := node.Next;
-     if node.Data.Group = Group then
-     node.Data.StudentsCount := node.Data.StudentsCount + delta;
-   end;
+  node := GroupHead;
+  while not(node.Next = nil) do
+  begin
+	node := node.Next;
+	if node.Data.Group = Group then
+	  node.Data.StudentsCount := node.Data.StudentsCount + delta;
+  end;
 end;
 
 procedure TApp.saveGroupsToFile(path: string);
@@ -653,6 +804,12 @@ begin
 	write(F, node.Data);
   end;
   closeFile(F);
+end;
+
+procedure TApp.saveListActionExecute(Sender: TObject);
+begin
+  if OpenDialog1.Execute then
+	App.Caption := OpenDialog1.FileName
 end;
 
 end.

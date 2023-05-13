@@ -1,9 +1,10 @@
 object infoGroupForm: TinfoGroupForm
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1075#1088#1091#1087#1087#1077
-  ClientHeight = 231
-  ClientWidth = 505
+  ClientHeight = 241
+  ClientWidth = 515
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +12,7 @@ object infoGroupForm: TinfoGroupForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

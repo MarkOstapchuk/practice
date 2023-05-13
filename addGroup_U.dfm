@@ -1,9 +1,10 @@
 object addGroupForm: TaddGroupForm
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1075#1088#1091#1087#1087#1091
-  ClientHeight = 330
-  ClientWidth = 660
+  ClientHeight = 340
+  ClientWidth = 616
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +12,7 @@ object addGroupForm: TaddGroupForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

@@ -1,9 +1,10 @@
 object addGradesForm: TaddGradesForm
   Left = 494
   Top = 309
+  BorderStyle = bsSingle
   Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1094#1077#1085#1082#1080
-  ClientHeight = 329
-  ClientWidth = 605
+  ClientHeight = 339
+  ClientWidth = 615
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,7 +12,7 @@ object addGradesForm: TaddGradesForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  Position = poDesigned
+  Position = poScreenCenter
   OnClose = FormClose
   OnShow = FormShow
   PixelsPerInch = 96
@@ -83,5 +84,14 @@ object addGradesForm: TaddGradesForm
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     TabOrder = 5
     OnClick = saveBtnClick
+  end
+  object retakeCB: TCheckBox
+    Left = 376
+    Top = 67
+    Width = 137
+    Height = 17
+    Caption = #1055#1077#1088#1077#1089#1076#1072#1095#1072'/'#1085#1077' '#1089#1076#1072#1085#1086
+    TabOrder = 6
+    OnClick = retakeCBClick
   end
 end

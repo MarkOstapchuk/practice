@@ -1,9 +1,10 @@
 object infoStudentForm: TinfoStudentForm
   Left = 0
   Top = 0
+  BorderStyle = bsSingle
   Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103' '#1086' '#1089#1090#1091#1076#1077#1085#1090#1077
-  ClientHeight = 316
-  ClientWidth = 607
+  ClientHeight = 326
+  ClientWidth = 617
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -11,6 +12,7 @@ object infoStudentForm: TinfoStudentForm
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13

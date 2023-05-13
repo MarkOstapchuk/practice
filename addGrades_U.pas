@@ -21,6 +21,7 @@ type
 	confirmBtn: TButton;
 	addSubjectEdit: TEdit;
 	saveBtn: TButton;
+    retakeCB: TCheckBox;
 	procedure FormShow(Sender: TObject);
 
 	procedure loadSubjects(var Subjects: TSubjects; path: string);
@@ -32,6 +33,7 @@ type
 	function isSubjectExist(subject: string): boolean;
 	procedure saveBtnClick(Sender: TObject);
 	procedure addSubjectEditChange(Sender: TObject);
+    procedure retakeCBClick(Sender: TObject);
   private
 	{ Private declarations }
   public
@@ -106,6 +108,11 @@ begin
   end;
 end;
 
+procedure TaddGradesForm.retakeCBClick(Sender: TObject);
+begin
+gradeEdit.Enabled := not retakeCB.Checked;
+end;
+
 procedure TaddGradesForm.saveBtnClick(Sender: TObject);
 begin
   self.Close;
@@ -141,11 +148,12 @@ var
 begin
 	if (SubjectsCmb.ItemIndex = 0) and (isSubjectExist(addSubjectEdit.Text)) then
 	  ShowMessage('Данная дисциплина уже добавлена.')
-	else if (StrToInt(gradeEdit.Text) > 10) or (StrToInt(gradeEdit.Text) < 0)
+	else if (not retakeCB.Checked) and ((StrToInt(gradeEdit.Text) > 10) or (StrToInt(gradeEdit.Text) < 0))
 	then
 	  ShowMessage('Отметка должна быть в пределах от 0 до 10.')
 	else
 	begin
+      if retakeCB.Checked then newGrade.Grade := -1 else
 	  newGrade.Grade := StrToInt(gradeEdit.Text);
 	  if SubjectsCmb.ItemIndex = 0 then
 	  begin
@@ -156,6 +164,8 @@ begin
 		newGrade.subject := SubjectsCmb.Items[SubjectsCmb.ItemIndex];
 	  Item := GradesList.Items.Add;
 	  Item.Caption := newGrade.subject;
+      if newGrade.Grade < 0 then
+       Item.SubItems.Add('Не сдано') else
 	  Item.SubItems.Add(IntToStr(newGrade.Grade));
 	  if not(SubjectsCmb.ItemIndex = 0) then
 	  begin
@@ -176,6 +186,8 @@ begin
   begin
 	Item := GradesList.Items.Add;
 	Item.Caption := Grades[I].subject;
+    if Grades[i].Grade < 0 then
+    	Item.SubItems.Add('Не сдано') else
 	Item.SubItems.Add(IntToStr(Grades[I].Grade));
   end;
 end;
@@ -195,9 +207,12 @@ end;
 procedure TaddGradesForm.FormShow(Sender: TObject);
 begin
   GradesList.Items.Clear;
-  loadSubjects(Subjects, path);
+  gradeEdit.Text := '';
+
   Grades := addStudentsForm.newStudent.Grades;
   GradesCount := addStudentsForm.newStudent.GradesCount;
+
+  loadSubjects(Subjects, path);
   ShowGrades(Grades);
 end;
 

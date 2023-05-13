@@ -23,6 +23,8 @@ type
 	procedure FormShow(Sender: TObject);
     procedure CancelBtnClick(Sender: TObject);
     procedure EditChange(Sender: TObject);
+
+    procedure clearStudentData(var student: TStudentData);
   private
 	{ Private declarations }
   public
@@ -38,7 +40,7 @@ implementation
 
 procedure TaddStudentsForm.confirmBtnClick(Sender: TObject);
 var
-  i: byte;
+  i, count: byte;
   sum: word;
   avg: single;
 begin
@@ -49,17 +51,18 @@ begin
 	MiddleName := Trim(MiddleNameEdit.Text);
 	Group := GroupsCmb.Items[GroupsCmb.ItemIndex];
   end;
-  if newStudent.GradesCount = 0 then
-	newStudent.AvgGrade := '-'
-  else
-  begin
+    Count := newStudent.GradesCount;
 	sum := 0;
 	for i := 0 to newStudent.GradesCount - 1 do
 	begin
+        if newStudent.Grades[i].Grade = -1 then
+        Dec(Count) else
 	  sum := sum + newStudent.Grades[i].Grade;
 	end;
-	newStudent.AvgGrade := Copy(FloatToStr(sum / newStudent.GradesCount), 1, 4);
-  end;
+    if Count = 0 then
+	newStudent.AvgGrade := '-' else
+	newStudent.AvgGrade := Copy(FloatToStr(sum / Count), 1, 4);
+
   App.addNewStudent(newStudent);
   Self.Close;
 end;
@@ -69,12 +72,27 @@ begin
 confirmBtn.Enabled := (Length(Trim(FirstNameEdit.Text)) > 0) and (Length(Trim(LastNameEdit.Text)) > 0) and
 (GroupsCmb.ItemIndex >= 0);
 end;
+procedure TaddStudentsForm.clearStudentData(var student: TStudentData);
+var i: integer;
+begin
+   student.FirstName := '';
+   student.LastName := '';
+   student.MiddleName := '';
+   for i := 0 to student.GradesCount - 1 do
+   begin
+        student.Grades[i].Subject := '';
+        student.Grades[i].Grade := 0;
+   end;
+   student.GradesCount := 0;
+   student.AvgGrade := '';
 
+end;
 procedure TaddStudentsForm.FormShow(Sender: TObject);
 var
   node: PGroup;
 begin
   GroupsCmb.Items.Clear;
+  clearStudentData(newStudent);
   node := App.GroupHead;
   while not(node.Next = nil) do
   begin
