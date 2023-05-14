@@ -97,6 +97,7 @@ object App: TApp
     Width = 65
     Height = 25
     Caption = #1055#1086#1080#1089#1082
+    Enabled = False
     TabOrder = 5
     OnClick = SearchStudentBtnClick
   end
@@ -116,6 +117,7 @@ object App: TApp
     Width = 137
     Height = 25
     Caption = #1057#1090#1091#1076#1077#1085#1090#1099' '#1101#1090#1086#1081' '#1075#1088#1091#1087#1087#1099'...'
+    Enabled = False
     TabOrder = 7
     OnClick = showStudentsGroupBtnClick
   end
@@ -127,6 +129,7 @@ object App: TApp
     MaxLength = 30
     TabOrder = 8
     TextHint = #1048#1084#1103
+    OnChange = LastNameEditChange
   end
   object LastNameEdit: TEdit
     Left = 384
@@ -136,6 +139,7 @@ object App: TApp
     MaxLength = 30
     TabOrder = 9
     TextHint = #1060#1072#1084#1080#1083#1080#1103
+    OnChange = LastNameEditChange
   end
   object MiddleNameEdit: TEdit
     Left = 608
@@ -885,8 +889,8 @@ object App: TApp
       OnExecute = debtorsListActionExecute
     end
   end
-  object OpenDialog1: TOpenDialog
-    Left = 64
+  object SaveDialog: TSaveDialog
+    Left = 56
     Top = 8
   end
 end

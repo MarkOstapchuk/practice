@@ -86,7 +86,7 @@ type
 	debtorsListAction: TAction;
 	N2: TMenuItem;
 	saveListAction: TAction;
-	OpenDialog1: TOpenDialog;
+	SaveDialog: TSaveDialog;
 	procedure FormCreate(Sender: TObject);
 
 	procedure addStudentBtnClick(Sender: TObject);
@@ -130,6 +130,9 @@ type
 	procedure debtorsListActionExecute(Sender: TObject);
 	procedure saveListActionExecute(Sender: TObject);
 
+	procedure saveList(itemIndex: Byte);
+    procedure LastNameEditChange(Sender: TObject);
+
   private
 	{ Private declarations }
   public
@@ -138,6 +141,7 @@ type
 	GroupHead: PGroup;
 	displayedHead: PStudent;
 	expulsionHead: PStudent;
+	DebtorsHead: PStudent;
 	isFiltered: boolean;
   end;
 
@@ -146,7 +150,7 @@ var
 
 implementation
 
-uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U;
+uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U, saveList_U;
 {$R *.dfm}
 
 procedure TApp.showAllStudentsBtnClick(Sender: TObject);
@@ -251,7 +255,7 @@ var
   i, index: Integer;
   node: PStudent;
 begin
-  index := StudentsList.ItemIndex;
+  index := StudentsList.itemIndex;
   node := Head;
   for i := 0 to index do
 	node := node.Next;
@@ -266,8 +270,8 @@ var
   i: Integer;
   flag: boolean;
 begin
-  new(expulsionHead);
-  newNode := expulsionHead;
+  new(DebtorsHead);
+  newNode := DebtorsHead;
   node := Head;
   while not(node.Next = nil) do
   begin
@@ -290,7 +294,7 @@ begin
 	ShowMessage('Студентов с задолжностями нет.')
   else
   begin
-	displayedHead := expulsionHead;
+	displayedHead := DebtorsHead;
 	isFiltered := true;
 	ShowStudents(displayedHead);
   end;
@@ -306,7 +310,7 @@ begin
 	node := displayedHead
   else
 	node := Head;
-  if StudentsList.ItemIndex = 0 then
+  if StudentsList.itemIndex = 0 then
   begin
 	if node.Next.Next = nil then
 	  node.Next := nil
@@ -315,7 +319,7 @@ begin
   end
   else
   begin
-	index := StudentsList.ItemIndex - 1;
+	index := StudentsList.itemIndex - 1;
 	for i := 0 to index do
 	  node := node.Next;
 	changeGroupCount(node.Next.Data.Group, -1);
@@ -349,7 +353,7 @@ end;
 procedure TApp.StudentsListChange(Sender: TObject; Item: TListItem;
   Change: TItemChange);
 begin
-  studentInfoBtn.Enabled := StudentsList.ItemIndex >= 0;
+  studentInfoBtn.Enabled := StudentsList.itemIndex >= 0;
 end;
 
 procedure TApp.addStudentBtnClick(Sender: TObject);
@@ -431,7 +435,7 @@ end;
 
 procedure TApp.showStudentsGroupBtnClick(Sender: TObject);
 begin
-  filterGroup(GroupsCmb.Items[GroupsCmb.ItemIndex]);
+  filterGroup(GroupsCmb.Items[GroupsCmb.itemIndex]);
   isFiltered := true;
 end;
 
@@ -511,7 +515,13 @@ end;
 
 procedure TApp.GroupsCmbChange(Sender: TObject);
 begin
-  GroupInfoBtn.Enabled := GroupsCmb.ItemIndex >= 0;
+  GroupInfoBtn.Enabled := GroupsCmb.itemIndex >= 0;
+  showStudentsGroupBtn.Enabled := GroupsCmb.itemIndex >= 0 ;
+end;
+
+procedure TApp.LastNameEditChange(Sender: TObject);
+begin
+    SearchStudentBtn.Enabled := (Length(Trim(lastNameEdit.Text)) > 0) and (Length(Trim(FirstNameEdit.Text)) > 0)
 end;
 
 procedure TApp.saveStudentsToFile(path: string);
@@ -571,7 +581,7 @@ begin
   begin
 	Item := StudentsList.Items[resIndexHead.Next.index];
 	Item.MakeVisible(false);
-	StudentsList.ItemIndex := resIndexHead.Next.index;
+	StudentsList.itemIndex := resIndexHead.Next.index;
   end
   else
 	ShowMessage('Найдено несколько совпадений.');
@@ -677,7 +687,7 @@ var
   i, index: Integer;
   node: PGroup;
 begin
-  index := GroupsCmb.ItemIndex;
+  index := GroupsCmb.itemIndex;
   node := GroupHead;
   for i := 0 to index do
 	node := node.Next;
@@ -692,7 +702,7 @@ var
   i, index: Integer;
 begin
   node := GroupHead;
-  if GroupsCmb.ItemIndex = 0 then
+  if GroupsCmb.itemIndex = 0 then
   begin
 	if node.Next.Next = nil then
 	  node.Next := nil
@@ -701,7 +711,7 @@ begin
   end
   else
   begin
-	index := GroupsCmb.ItemIndex - 1;
+	index := GroupsCmb.itemIndex - 1;
 	for i := 0 to index do
 	  node := node.Next;
 	if node.Next.Next = nil then
@@ -806,10 +816,58 @@ begin
   closeFile(F);
 end;
 
+procedure TApp.saveList(itemIndex: Byte);
+var
+  F: textFile;
+  path, newStr: string;
+  node: PStudent;
+begin
+  try
+	// Настройка параметров диалогового окна
+	SaveDialog.Title := 'Выберите путь для сохранения файла';
+	SaveDialog.Filter := 'Текстовые файлы (*.txt)|*.txt'; // Фильтр файлов
+	SaveDialog.DefaultExt := 'txt'; // Расширение файла по умолчанию
+
+	// Показать диалоговое окно и обработка результатов
+	if SaveDialog.Execute then
+	begin
+	  // Получить выбранный путь
+	  ShowMessage('Файл сохранен по адресу: ' + SaveDialog.FileName);
+	  path := SaveDialog.FileName;
+	  AssignFile(F, path, CP_UTF8);
+	  Rewrite(F);
+	  case itemIndex of
+		0:
+		  begin
+			  node := expulsionHead;
+		  end;
+		1:
+		  begin
+			  node := DebtorsHead;
+		  end;
+	  end;
+	  while not(node.Next = nil) do
+	  begin
+		node := node.Next;
+		newStr := node.Data.LastName + ' ' + node.Data.FirstName + ' ' +
+		  node.Data.MiddleName + '       Группа: ' + node.Data.Group;
+		Writeln(F, newStr);
+	  end;
+	  closeFile(F);
+	end
+  else
+  begin
+	// Действие при отмене выбора файла
+	ShowMessage('Сохранение отменено');
+  end;
+finally
+  SaveDialog.Free;
+end;
+end;
+
 procedure TApp.saveListActionExecute(Sender: TObject);
 begin
-  if OpenDialog1.Execute then
-	App.Caption := OpenDialog1.FileName
+  saveListForm.ShowModal;
 end;
 
 end.

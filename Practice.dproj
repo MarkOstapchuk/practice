@@ -120,6 +120,10 @@
             <Form>infoStudentForm</Form>
             <FormType>dfm</FormType>
         </DCCReference>
+        <DCCReference Include="saveList_U.pas">
+            <Form>SaveListForm</Form>
+            <FormType>dfm</FormType>
+        </DCCReference>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

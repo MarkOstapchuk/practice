@@ -7,7 +7,8 @@ uses
   addStudents_U in 'addStudents_U.pas' {addStudentsForm},
   addGroup_U in 'addGroup_U.pas' {addGroupForm},
   infoGroup_U in 'infoGroup_U.pas' {infoGroupForm},
-  infoStudent_U in 'infoStudent_U.pas' {infoStudentForm};
+  infoStudent_U in 'infoStudent_U.pas' {infoStudentForm},
+  saveList_U in 'saveList_U.pas' {SaveListForm};
 
 {$R *.res}
 
@@ -20,6 +21,7 @@ begin
   Application.CreateForm(TaddGroupForm, addGroupForm);
   Application.CreateForm(TinfoGroupForm, infoGroupForm);
   Application.CreateForm(TinfoStudentForm, infoStudentForm);
+  Application.CreateForm(TSaveListForm, SaveListForm);
   Application.Run;
 
 end.
