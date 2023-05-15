@@ -78,7 +78,7 @@ object addGradesForm: TaddGradesForm
   end
   object saveBtn: TButton
     Left = 272
-    Top = 273
+    Top = 281
     Width = 75
     Height = 25
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100

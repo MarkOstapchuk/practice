@@ -131,7 +131,7 @@ type
 	procedure saveListActionExecute(Sender: TObject);
 
 	procedure saveList(itemIndex: Byte);
-    procedure LastNameEditChange(Sender: TObject);
+	procedure LastNameEditChange(Sender: TObject);
 
   private
 	{ Private declarations }
@@ -259,7 +259,9 @@ begin
   node := Head;
   for i := 0 to index do
 	node := node.Next;
+  changeGroupCount(node.Data.Group, -1);
   node.Data := Data;
+  changeGroupCount(node.Data.Group, 1);
   ShowStudents(Head);
   wasSaved := false;
 end;
@@ -290,7 +292,7 @@ begin
 	end;
   end;
   newNode.Next := nil;
-  if expulsionHead.Next = nil then
+  if DebtorsHead.Next = nil then
 	ShowMessage('Студентов с задолжностями нет.')
   else
   begin
@@ -303,8 +305,8 @@ end;
 
 procedure TApp.deleteStudent;
 var
-  node: PStudent;
-  i, index: Integer;
+   node: PStudent;
+  i,id, index: Integer;
 begin
   if isFiltered then
 	node := displayedHead
@@ -312,6 +314,8 @@ begin
 	node := Head;
   if StudentsList.itemIndex = 0 then
   begin
+	id := node.Next.Data.id;
+    changeGroupCount(node.Next.Data.Group, -1);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
@@ -322,14 +326,26 @@ begin
 	index := StudentsList.itemIndex - 1;
 	for i := 0 to index do
 	  node := node.Next;
+	id := node.Next.Data.id;
 	changeGroupCount(node.Next.Data.Group, -1);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
 	  node.Next := node.Next.Next;
   end;
-  ShowStudents(Head);
-  isFiltered := false;
+  if isFiltered then
+  begin
+	node := Head;
+	while not(node.Next.Data.id = id) do
+	begin
+	  node := node.Next;
+	end;
+	if node.Next.Next = nil then
+	  node.Next := nil
+	else
+	  node.Next := node.Next.Next;
+  end;
+  if isFiltered then ShowStudents(DisplayedHead) else ShowStudents(Head);
   wasSaved := false;
 end;
 
@@ -516,12 +532,13 @@ end;
 procedure TApp.GroupsCmbChange(Sender: TObject);
 begin
   GroupInfoBtn.Enabled := GroupsCmb.itemIndex >= 0;
-  showStudentsGroupBtn.Enabled := GroupsCmb.itemIndex >= 0 ;
+  showStudentsGroupBtn.Enabled := GroupsCmb.itemIndex >= 0;
 end;
 
 procedure TApp.LastNameEditChange(Sender: TObject);
 begin
-    SearchStudentBtn.Enabled := (Length(Trim(lastNameEdit.Text)) > 0) and (Length(Trim(FirstNameEdit.Text)) > 0)
+  SearchStudentBtn.Enabled := (Length(Trim(LastNameEdit.Text)) > 0) and
+	(Length(Trim(FirstNameEdit.Text)) > 0)
 end;
 
 procedure TApp.saveStudentsToFile(path: string);
@@ -721,6 +738,7 @@ begin
   end;
   showGroups;
   wasSaved := false;
+  GroupInfoBtn.Enabled := GroupsCmb.Items.Count > 0;
 end;
 
 procedure TApp.StudentsListColumnClick(Sender: TObject; Column: TListColumn);
@@ -790,13 +808,18 @@ end;
 procedure TApp.changeGroupCount(Group: ShortString; delta: Integer);
 var
   node: PGroup;
+  flag: boolean;
 begin
   node := GroupHead;
-  while not(node.Next = nil) do
+  flag := false;
+  while (not(node.Next = nil)) and (not flag) do
   begin
 	node := node.Next;
 	if node.Data.Group = Group then
+    begin
 	  node.Data.StudentsCount := node.Data.StudentsCount + delta;
+      flag := true;
+    end;
   end;
 end;
 
@@ -839,11 +862,11 @@ begin
 	  case itemIndex of
 		0:
 		  begin
-			  node := expulsionHead;
+			node := expulsionHead;
 		  end;
 		1:
 		  begin
-			  node := DebtorsHead;
+			node := DebtorsHead;
 		  end;
 	  end;
 	  while not(node.Next = nil) do
@@ -855,14 +878,14 @@ begin
 	  end;
 	  closeFile(F);
 	end
-  else
-  begin
-	// Действие при отмене выбора файла
-	ShowMessage('Сохранение отменено');
+	else
+	begin
+	  // Действие при отмене выбора файла
+	  ShowMessage('Сохранение отменено');
+	end;
+  finally
+	SaveDialog.Free;
   end;
-finally
-  SaveDialog.Free;
-end;
 end;
 
 procedure TApp.saveListActionExecute(Sender: TObject);

@@ -14,6 +14,7 @@ object SaveListForm: TSaveListForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object RadioGroup: TRadioGroup
@@ -34,7 +35,6 @@ object SaveListForm: TSaveListForm
     Width = 75
     Height = 25
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
-    Enabled = False
     TabOrder = 1
     OnClick = SaveBtnClick
   end

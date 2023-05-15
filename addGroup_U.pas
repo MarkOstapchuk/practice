@@ -17,6 +17,7 @@ type
 	procedure confirmBtnClick(Sender: TObject);
 	procedure cancelBtnClick(Sender: TObject);
 	procedure FormShow(Sender: TObject);
+    procedure GroupEditChange(Sender: TObject);
 
   private
 	{ Private declarations }
@@ -70,6 +71,12 @@ begin
   GroupEdit.Text := '';
   CodeEdit.Text := '';
   YearEdit.Text := '';
+  confirmBtn.Enabled := false;
+end;
+
+procedure TaddGroupForm.GroupEditChange(Sender: TObject);
+begin
+ confirmBtn.Enabled := (Length(GroupEdit.Text) = 6) and (Length(CodeEdit.Text) = 10) and (Length(YearEdit.Text) = 4)
 end;
 
 end.

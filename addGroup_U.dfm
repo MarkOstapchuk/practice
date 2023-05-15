@@ -25,6 +25,7 @@ object addGroupForm: TaddGroupForm
     NumbersOnly = True
     TabOrder = 0
     TextHint = #1053#1086#1084#1077#1088' '#1075#1088#1091#1087#1087#1099
+    OnChange = GroupEditChange
   end
   object YearEdit: TEdit
     Left = 232
@@ -32,21 +33,24 @@ object addGroupForm: TaddGroupForm
     Width = 171
     Height = 21
     Hint = #1075#1086#1076' '#1086#1073#1088#1072#1079#1086#1074#1072#1085#1080#1103
+    MaxLength = 4
     NumbersOnly = True
     ParentShowHint = False
     ShowHint = True
     TabOrder = 1
     TextHint = #1043#1086#1076' '#1086#1073#1088#1072#1079#1086#1074#1072#1085#1080#1103
+    OnChange = GroupEditChange
   end
   object CodeEdit: TMaskEdit
     Left = 232
-    Top = 160
+    Top = 168
     Width = 171
     Height = 21
     EditMask = '0\-00\ 00\ 00;1;_'
     MaxLength = 10
     TabOrder = 2
     Text = ' -        '
+    OnChange = GroupEditChange
   end
   object cancelBtn: TButton
     Left = 232

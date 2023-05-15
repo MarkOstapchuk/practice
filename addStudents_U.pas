@@ -42,7 +42,6 @@ procedure TaddStudentsForm.confirmBtnClick(Sender: TObject);
 var
   i, count: byte;
   sum: word;
-  avg: single;
 begin
   with newStudent do
   begin

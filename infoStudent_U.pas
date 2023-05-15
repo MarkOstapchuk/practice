@@ -5,7 +5,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Main_U;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Mask, Main_U,
+  infoGrades_U;
 
 type
   TinfoStudentForm = class(TForm)
@@ -22,6 +23,7 @@ type
 	GroupLabel: TLabel;
 	GroupsCmb: TComboBox;
 	GroupEdit: TEdit;
+    addGradesBtn: TButton;
 	procedure FormShow(Sender: TObject);
 	procedure ShowInfo;
 	procedure EditBtnClick(Sender: TObject);
@@ -31,6 +33,8 @@ type
 	procedure CheckLetterPress(Sender: TObject; var Key: Char);
 	procedure EditChange(Sender: TObject);
 	procedure DeleteBtnClick(Sender: TObject);
+    procedure addGradesBtnClick(Sender: TObject);
+    procedure countAvg;
   private
 	{ Private declarations }
   public
@@ -41,7 +45,6 @@ var
   infoStudentForm: TinfoStudentForm;
 
 implementation
-
 {$R *.dfm}
 
 procedure TinfoStudentForm.SaveBtnClick(Sender: TObject);
@@ -69,6 +72,11 @@ begin
   LastNameEdit.Text := chosenStudent.LastName;
   MiddleNameEdit.Text := chosenStudent.MiddleName;
   GroupEdit.Text := chosenStudent.Group;
+end;
+
+procedure TinfoStudentForm.addGradesBtnClick(Sender: TObject);
+begin
+infoGradesForm.ShowModal;
 end;
 
 procedure TinfoStudentForm.CancelBtnClick(Sender: TObject);
@@ -127,11 +135,14 @@ FirstNameEdit.Enabled := false;
 	node := node.Next;
   chosenStudent := node.Data;
   nodeGr := App.GroupHead;
+  if nodeGr.Next = nil then
+  GroupsCmb.Items.Add('Добавьте сначала группу');
   while not(nodeGr.Next = nil) do
   begin
 	nodeGr := nodeGr.Next;
 	GroupsCmb.Items.Add(nodeGr.Data.Group);
   end;
+  GroupsCmb.ItemIndex := 0;
   ShowInfo;
 end;
 
@@ -146,6 +157,26 @@ begin
 
   if Key in ['0' .. '9'] then // Проверяем, что введенный символ является цифрой
 	Key := #0; // Отменяем обработку события KeyPress
+end;
+
+procedure TinfoStudentForm.countAvg;
+var
+  i, count: byte;
+  sum: word;
+  avg: single;
+begin
+    Count := chosenStudent.GradesCount;
+	sum := 0;
+	for i := 0 to chosenStudent.GradesCount - 1 do
+	begin
+        if chosenStudent.Grades[i].Grade = -1 then
+        Dec(Count) else
+	  sum := sum + chosenStudent.Grades[i].Grade;
+	end;
+    if Count = 0 then
+	chosenStudent.AvgGrade := '-' else
+	chosenStudent.AvgGrade := Copy(FloatToStr(sum / Count), 1, 4);
+    App.changeStudentInfo(chosenStudent);
 end;
 
 procedure TinfoStudentForm.DeleteBtnClick(Sender: TObject);

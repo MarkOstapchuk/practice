@@ -13,6 +13,7 @@ type
 	SaveBtn: TButton;
 	procedure RadioGroupClick(Sender: TObject);
 	procedure SaveBtnClick(Sender: TObject);
+	procedure FormShow(Sender: TObject);
   private
 	{ Private declarations }
   public
@@ -27,6 +28,11 @@ implementation
 uses Main_U;
 {$R *.dfm}
 
+procedure TSaveListForm.FormShow(Sender: TObject);
+begin
+  RadioGroup.ItemIndex := 0;
+end;
+
 procedure TSaveListForm.RadioGroupClick(Sender: TObject);
 begin
   SaveBtn.Enabled := true;
@@ -37,16 +43,16 @@ begin
   case RadioGroup.ItemIndex of
 	0:
 	  if (App.expulsionHead = nil) or (App.expulsionHead.Next = nil) then
-      begin
+	  begin
 		ShowMessage('Список студентов на отчисление пуст.');
-        Exit
-      end;
+		Exit
+	  end;
 	1:
 	  if (App.DebtorsHead = nil) or (App.DebtorsHead.Next = nil) then
-      begin
+	  begin
 		ShowMessage('Список студентов-задлжников пуст.');
-        Exit
-      end;
+		Exit
+	  end;
   end;
   App.saveList(RadioGroup.ItemIndex);
   self.CLose;

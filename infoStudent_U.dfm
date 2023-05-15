@@ -46,7 +46,7 @@ object infoStudentForm: TinfoStudentForm
   end
   object DeleteBtn: TButton
     Left = 171
-    Top = 216
+    Top = 247
     Width = 103
     Height = 25
     Caption = #1059#1076#1072#1083#1080#1090#1100
@@ -55,7 +55,7 @@ object infoStudentForm: TinfoStudentForm
   end
   object EditBtn: TButton
     Left = 330
-    Top = 216
+    Top = 247
     Width = 108
     Height = 25
     Caption = #1056#1077#1076#1072#1082#1090#1080#1088#1086#1074#1072#1090#1100
@@ -63,9 +63,9 @@ object infoStudentForm: TinfoStudentForm
     OnClick = EditBtnClick
   end
   object SaveBtn: TButton
-    Left = 325
-    Top = 216
-    Width = 113
+    Left = 330
+    Top = 247
+    Width = 108
     Height = 25
     Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
     TabOrder = 2
@@ -74,7 +74,7 @@ object infoStudentForm: TinfoStudentForm
   end
   object CancelBtn: TButton
     Left = 171
-    Top = 216
+    Top = 247
     Width = 103
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1080#1090#1100
@@ -131,5 +131,14 @@ object infoStudentForm: TinfoStudentForm
     Height = 21
     Enabled = False
     TabOrder = 8
+  end
+  object addGradesBtn: TButton
+    Left = 248
+    Top = 201
+    Width = 113
+    Height = 25
+    Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1094#1077#1085#1082#1080
+    TabOrder = 9
+    OnClick = addGradesBtnClick
   end
 end
