@@ -26,7 +26,7 @@ type
 
     procedure clearStudentData(var student: TStudentData);
   private
-	{ Private declarations }
+	buttonDis: boolean;
   public
 	newStudent: TStudentData;
   end;
@@ -69,7 +69,7 @@ end;
 procedure TaddStudentsForm.EditChange(Sender: TObject);
 begin
 confirmBtn.Enabled := (Length(Trim(FirstNameEdit.Text)) > 0) and (Length(Trim(LastNameEdit.Text)) > 0) and
-(GroupsCmb.ItemIndex >= 0);
+(GroupsCmb.ItemIndex >= 0) and (not buttonDis );
 end;
 procedure TaddStudentsForm.clearStudentData(var student: TStudentData);
 var i: integer;
@@ -104,11 +104,13 @@ begin
   begin
 	GroupsCmb.Items.Add('Нет добавленных групп');
 	confirmBtn.Enabled := false;
+    buttonDis := true;
   end;
   confirmBtn.Enabled := false;
   FirstNameEdit.Text := '';
   LastNameEdit.Text := '';
   MiddleNameEdit.Text := '';
+  buttonDis := false;
 end;
 
 procedure TaddStudentsForm.addGradesBtnClick(Sender: TObject);

@@ -19,7 +19,7 @@ object SaveListForm: TSaveListForm
   TextHeight = 13
   object RadioGroup: TRadioGroup
     Left = 160
-    Top = 64
+    Top = 40
     Width = 233
     Height = 105
     Caption = #1042#1099#1073#1077#1088#1080#1090#1077' '#1089#1087#1080#1089#1086#1082':'

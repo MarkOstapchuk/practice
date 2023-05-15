@@ -5,9 +5,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
   System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls, Main_U;
+
 
 type
+
+
   TSaveListForm = class(TForm)
 	RadioGroup: TRadioGroup;
 	SaveBtn: TButton;
@@ -15,7 +18,7 @@ type
 	procedure SaveBtnClick(Sender: TObject);
 	procedure FormShow(Sender: TObject);
   private
-	{ Private declarations }
+
   public
 	{ Public declarations }
   end;
@@ -25,7 +28,6 @@ var
 
 implementation
 
-uses Main_U;
 {$R *.dfm}
 
 procedure TSaveListForm.FormShow(Sender: TObject);

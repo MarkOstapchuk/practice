@@ -14,18 +14,18 @@
     <Transaction>2023/05/09 15:25:34.000.341,D:\work\univer\delphi\practice\Main.dfm=D:\work\univer\delphi\practice\Main_U.dfm</Transaction>
     <Transaction>2023/05/09 15:25:34.000.341,D:\work\univer\delphi\practice\Main.pas=D:\work\univer\delphi\practice\Main_U.pas</Transaction>
     <Transaction>2023/05/09 16:50:34.000.043,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
-    <Transaction>2023/05/09 16:50:51.000.328,D:\work\univer\delphi\practice\Unit1.pas=D:\work\univer\delphi\practice\addGrades_U.pas</Transaction>
     <Transaction>2023/05/09 16:50:51.000.328,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\addGrades_U.dfm</Transaction>
+    <Transaction>2023/05/09 16:50:51.000.328,D:\work\univer\delphi\practice\Unit1.pas=D:\work\univer\delphi\practice\addGrades_U.pas</Transaction>
     <Transaction>2023/05/09 17:53:47.000.371,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
     <Transaction>2023/05/09 18:00:26.000.484,D:\work\univer\delphi\practice\AddStudent_U.pas=</Transaction>
     <Transaction>2023/05/09 18:10:11.000.758,D:\work\univer\delphi\practice\addStudents_U.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
     <Transaction>2023/05/09 18:10:11.000.758,D:\work\univer\delphi\practice\addStudents_U.pas=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
     <Transaction>2023/05/11 13:35:29.000.345,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
-    <Transaction>2023/05/11 13:35:44.000.031,D:\work\univer\delphi\practice\addGroup_U.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
     <Transaction>2023/05/11 13:35:44.000.031,D:\work\univer\delphi\practice\addGroup_U.pas=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
+    <Transaction>2023/05/11 13:35:44.000.031,D:\work\univer\delphi\practice\addGroup_U.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
     <Transaction>2023/05/11 14:52:29.000.765,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
-    <Transaction>2023/05/11 14:52:40.000.269,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\infoGroup.dfm</Transaction>
     <Transaction>2023/05/11 14:52:40.000.269,D:\work\univer\delphi\practice\Unit1.pas=D:\work\univer\delphi\practice\infoGroup.pas</Transaction>
+    <Transaction>2023/05/11 14:52:40.000.269,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\infoGroup.dfm</Transaction>
     <Transaction>2023/05/11 14:53:32.000.007,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
     <Transaction>2023/05/11 14:53:42.000.427,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\infoGroup_U.dfm</Transaction>
     <Transaction>2023/05/11 14:53:42.000.427,D:\work\univer\delphi\practice\Unit1.pas=D:\work\univer\delphi\practice\infoGroup_U.pas</Transaction>
@@ -37,14 +37,19 @@
     <Transaction>2023/05/11 20:06:11.000.098,D:\work\univer\delphi\practice\search_U.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
     <Transaction>2023/05/11 20:15:43.000.994,D:\work\univer\delphi\practice\search_U.pas=</Transaction>
     <Transaction>2023/05/14 10:29:28.000.580,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
-    <Transaction>2023/05/14 10:29:45.000.106,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\saveAs_U.dfm</Transaction>
     <Transaction>2023/05/14 10:29:45.000.106,D:\work\univer\delphi\practice\Unit1.pas=D:\work\univer\delphi\practice\saveAs_U.pas</Transaction>
-    <Transaction>2023/05/14 10:30:41.000.041,D:\work\univer\delphi\practice\saveAs_U.pas=D:\work\univer\delphi\practice\saveList_U.pas</Transaction>
+    <Transaction>2023/05/14 10:29:45.000.106,D:\work\univer\delphi\practice\Unit1.dfm=D:\work\univer\delphi\practice\saveAs_U.dfm</Transaction>
     <Transaction>2023/05/14 10:30:41.000.041,D:\work\univer\delphi\practice\saveAs_U.dfm=D:\work\univer\delphi\practice\saveList_U.dfm</Transaction>
+    <Transaction>2023/05/14 10:30:41.000.041,D:\work\univer\delphi\practice\saveAs_U.pas=D:\work\univer\delphi\practice\saveList_U.pas</Transaction>
     <Transaction>2023/05/15 17:00:02.885,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
-    <Transaction>2023/05/15 17:00:13.755,D:\work\univer\delphi\practice\infoGrades.pas=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
     <Transaction>2023/05/15 17:00:13.755,D:\work\univer\delphi\practice\infoGrades.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
-    <Transaction>2023/05/15 17:02:44.261,D:\work\univer\delphi\practice\infoGrades_U.pas=D:\work\univer\delphi\practice\infoGrades.pas</Transaction>
+    <Transaction>2023/05/15 17:00:13.755,D:\work\univer\delphi\practice\infoGrades.pas=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
     <Transaction>2023/05/15 17:02:44.261,D:\work\univer\delphi\practice\infoGrades_U.dfm=D:\work\univer\delphi\practice\infoGrades.dfm</Transaction>
+    <Transaction>2023/05/15 17:02:44.261,D:\work\univer\delphi\practice\infoGrades_U.pas=D:\work\univer\delphi\practice\infoGrades.pas</Transaction>
+    <Transaction>2023/05/15 18:36:11.304,=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
+    <Transaction>2023/05/15 18:36:22.224,D:\work\univer\delphi\practice\chooseSubject.dfm=D:\work\univer\delphi\practice\Unit1.dfm</Transaction>
+    <Transaction>2023/05/15 18:36:22.224,D:\work\univer\delphi\practice\chooseSubject.pas=D:\work\univer\delphi\practice\Unit1.pas</Transaction>
+    <Transaction>2023/05/15 18:36:28.649,D:\work\univer\delphi\practice\chooseSubject_U.pas=D:\work\univer\delphi\practice\chooseSubject.pas</Transaction>
+    <Transaction>2023/05/15 18:36:28.649,D:\work\univer\delphi\practice\chooseSubject_U.dfm=D:\work\univer\delphi\practice\chooseSubject.dfm</Transaction>
   </Transactions>
 </BorlandProject>

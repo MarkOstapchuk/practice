@@ -126,8 +126,11 @@ type
 	procedure showAllStudentsBtnClick(Sender: TObject);
 	procedure SaveActionExecute(Sender: TObject);
 	procedure ExitActionExecute(Sender: TObject);
+
 	procedure expulsionListActionExecute(Sender: TObject);
 	procedure debtorsListActionExecute(Sender: TObject);
+    procedure makeDebtorsList(subject:string);
+
 	procedure saveListActionExecute(Sender: TObject);
 
 	procedure saveList(itemIndex: Byte);
@@ -150,7 +153,7 @@ var
 
 implementation
 
-uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U, saveList_U;
+uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U, saveList_U, chooseSubject_U;
 {$R *.dfm}
 
 procedure TApp.showAllStudentsBtnClick(Sender: TObject);
@@ -265,9 +268,8 @@ begin
   ShowStudents(Head);
   wasSaved := false;
 end;
-
-procedure TApp.debtorsListActionExecute(Sender: TObject);
-var
+procedure TApp.makeDebtorsList(subject:string);
+  var
   node, newNode: PStudent;
   i: Integer;
   flag: boolean;
@@ -281,6 +283,7 @@ begin
 	flag := false;
 	for i := 0 to node.Data.GradesCount - 1 do
 	begin
+      if node.Data.Grades[i].Subject = Subject then
 	  if node.Data.Grades[i].Grade < 0 then
 		flag := true;
 	end;
@@ -300,7 +303,10 @@ begin
 	isFiltered := true;
 	ShowStudents(displayedHead);
   end;
-
+end;
+procedure TApp.debtorsListActionExecute(Sender: TObject);
+begin
+  chooseSubjectForm.ShowModal;
 end;
 
 procedure TApp.deleteStudent;

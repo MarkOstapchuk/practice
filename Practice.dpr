@@ -9,7 +9,8 @@ uses
   infoGroup_U in 'infoGroup_U.pas' {infoGroupForm},
   infoStudent_U in 'infoStudent_U.pas' {infoStudentForm},
   saveList_U in 'saveList_U.pas' {SaveListForm},
-  infoGrades_U in 'infoGrades_U.pas' {InfoGradesForm};
+  infoGrades_U in 'infoGrades_U.pas' {InfoGradesForm},
+  chooseSubject_U in 'chooseSubject_U.pas' {chooseSubjectForm};
 
 {$R *.res}
 
@@ -24,6 +25,7 @@ begin
   Application.CreateForm(TinfoStudentForm, infoStudentForm);
   Application.CreateForm(TSaveListForm, SaveListForm);
   Application.CreateForm(TInfoGradesForm, InfoGradesForm);
+  Application.CreateForm(TchooseSubjectForm, chooseSubjectForm);
   Application.Run;
 
 end.
