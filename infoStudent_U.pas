@@ -24,6 +24,7 @@ type
 	GroupsCmb: TComboBox;
 	GroupEdit: TEdit;
     addGradesBtn: TButton;
+    saveBtn2: TButton;
 	procedure FormShow(Sender: TObject);
 	procedure ShowInfo;
 	procedure EditBtnClick(Sender: TObject);
@@ -62,6 +63,7 @@ begin
   EditBtn.Visible := true;
   GroupsCmb.Visible := false;
   GroupEdit.Visible := true;
+  SaveBtn2.Visible := true;
   App.changeStudentInfo(chosenStudent);
   self.Close;
 end;
@@ -90,6 +92,7 @@ begin
   EditBtn.Visible := true;
   GroupsCmb.Visible := false;
   GroupEdit.Visible := true;
+  SaveBtn2.Visible := true;
 end;
 
 procedure TinfoStudentForm.EditBtnClick(Sender: TObject);
@@ -104,6 +107,7 @@ begin
   EditBtn.Visible := false;
   GroupsCmb.Visible := true;
   GroupEdit.Visible := false;
+  SaveBtn2.Visible := false;
 end;
 
 procedure TinfoStudentForm.FirstNameEditChange(Sender: TObject);
@@ -127,6 +131,7 @@ FirstNameEdit.Enabled := false;
   GroupsCmb.Visible := false;
   GroupEdit.Visible := true;
   GroupsCmb.Items.Clear;
+  SaveBtn2.Visible := true;
   Index := App.StudentsList.ItemIndex;
   if App.isFiltered then
   node := App.displayedHead else
@@ -176,7 +181,7 @@ begin
     if Count = 0 then
 	chosenStudent.AvgGrade := '-' else
 	chosenStudent.AvgGrade := Copy(FloatToStr(sum / Count), 1, 4);
-    App.changeStudentInfo(chosenStudent);
+    //App.changeStudentInfo(chosenStudent);
 end;
 
 procedure TinfoStudentForm.DeleteBtnClick(Sender: TObject);

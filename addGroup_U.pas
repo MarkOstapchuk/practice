@@ -19,6 +19,7 @@ type
 	procedure FormShow(Sender: TObject);
     procedure GroupEditChange(Sender: TObject);
 
+
   private
 	{ Private declarations }
   public
@@ -31,6 +32,7 @@ var
 implementation
 
 {$R *.dfm}
+
 
 procedure TaddGroupForm.cancelBtnClick(Sender: TObject);
 begin

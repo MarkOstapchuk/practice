@@ -10,10 +10,10 @@ uses
   Vcl.ActnList;
 
 const
-  studentsPath = '..\..\assets\students.txt';
+  studentsPath = '\students.txt';
 
 const
-  groupsPath = '..\..\assets\groups.txt';
+  groupsPath = '\groups.txt';
 
 type
 
@@ -105,6 +105,7 @@ type
 	procedure ShowNewGroup(Group: ShortString);
 	procedure ChangeGroupInfo(Data: TGroupData);
 	procedure DeleteGroup;
+	procedure DeleteGroupStudent(Group: String);
 	procedure saveGroupsToFile(path: string);
 	procedure changeGroupCount(Group: ShortString; delta: Integer);
 	procedure loadGroups(path: string);
@@ -129,7 +130,7 @@ type
 
 	procedure expulsionListActionExecute(Sender: TObject);
 	procedure debtorsListActionExecute(Sender: TObject);
-    procedure makeDebtorsList(subject:string);
+	procedure makeDebtorsList(Subject: string);
 
 	procedure saveListActionExecute(Sender: TObject);
 
@@ -137,15 +138,16 @@ type
 	procedure LastNameEditChange(Sender: TObject);
 
   private
-	{ Private declarations }
-  public
 	wasSaved: boolean;
+
+  public
+	isFiltered: boolean;
 	Head: PStudent;
 	GroupHead: PGroup;
 	displayedHead: PStudent;
 	expulsionHead: PStudent;
 	DebtorsHead: PStudent;
-	isFiltered: boolean;
+
   end;
 
 var
@@ -153,7 +155,8 @@ var
 
 implementation
 
-uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U, saveList_U, chooseSubject_U;
+uses addStudents_U, addGroup_U, infoGroup_U, infoStudent_U, saveList_U,
+  chooseSubject_U;
 {$R *.dfm}
 
 procedure TApp.showAllStudentsBtnClick(Sender: TObject);
@@ -268,8 +271,9 @@ begin
   ShowStudents(Head);
   wasSaved := false;
 end;
-procedure TApp.makeDebtorsList(subject:string);
-  var
+
+procedure TApp.makeDebtorsList(Subject: string);
+var
   node, newNode: PStudent;
   i: Integer;
   flag: boolean;
@@ -283,9 +287,9 @@ begin
 	flag := false;
 	for i := 0 to node.Data.GradesCount - 1 do
 	begin
-      if node.Data.Grades[i].Subject = Subject then
-	  if node.Data.Grades[i].Grade < 0 then
-		flag := true;
+	  if node.Data.Grades[i].Subject = Subject then
+		if node.Data.Grades[i].Grade < 0 then
+		  flag := true;
 	end;
 	if flag then
 	begin
@@ -304,6 +308,7 @@ begin
 	ShowStudents(displayedHead);
   end;
 end;
+
 procedure TApp.debtorsListActionExecute(Sender: TObject);
 begin
   chooseSubjectForm.ShowModal;
@@ -311,8 +316,8 @@ end;
 
 procedure TApp.deleteStudent;
 var
-   node: PStudent;
-  i,id, index: Integer;
+  node: PStudent;
+  i, id, index: Integer;
 begin
   if isFiltered then
 	node := displayedHead
@@ -321,7 +326,7 @@ begin
   if StudentsList.itemIndex = 0 then
   begin
 	id := node.Next.Data.id;
-    changeGroupCount(node.Next.Data.Group, -1);
+	changeGroupCount(node.Next.Data.Group, -1);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
@@ -351,7 +356,10 @@ begin
 	else
 	  node.Next := node.Next.Next;
   end;
-  if isFiltered then ShowStudents(DisplayedHead) else ShowStudents(Head);
+  if isFiltered then
+	ShowStudents(displayedHead)
+  else
+	ShowStudents(Head);
   wasSaved := false;
 end;
 
@@ -717,6 +725,23 @@ begin
   node.Data := Data;
   showGroups;
   wasSaved := false;
+  GroupInfoBtn.Enabled := false;
+end;
+
+procedure TApp.DeleteGroupStudent(Group: string);
+var
+  node: PStudent;
+begin
+  node := Head;
+  if not(node.Next = nil) then
+  begin
+	repeat
+	  if node.Next.Data.Group = Group then
+		node.Next := node.Next.Next
+      else
+      node := node.Next;
+	until node.Next = nil;
+  end;
 end;
 
 procedure TApp.DeleteGroup;
@@ -727,6 +752,7 @@ begin
   node := GroupHead;
   if GroupsCmb.itemIndex = 0 then
   begin
+    DeleteGroupStudent(node.Next.Data.Group);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
@@ -737,14 +763,17 @@ begin
 	index := GroupsCmb.itemIndex - 1;
 	for i := 0 to index do
 	  node := node.Next;
+      DeleteGroupStudent(node.Next.Data.Group);
 	if node.Next.Next = nil then
 	  node.Next := nil
 	else
 	  node.Next := node.Next.Next;
   end;
+  showStudents(Head);
   showGroups;
   wasSaved := false;
   GroupInfoBtn.Enabled := GroupsCmb.Items.Count > 0;
+  showStudentsGroupBtn.Enabled := GroupsCmb.Items.Count > 0;
 end;
 
 procedure TApp.StudentsListColumnClick(Sender: TObject; Column: TListColumn);
@@ -822,10 +851,10 @@ begin
   begin
 	node := node.Next;
 	if node.Data.Group = Group then
-    begin
+	begin
 	  node.Data.StudentsCount := node.Data.StudentsCount + delta;
-      flag := true;
-    end;
+	  flag := true;
+	end;
   end;
 end;
 

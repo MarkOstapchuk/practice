@@ -133,12 +133,21 @@ object infoStudentForm: TinfoStudentForm
     TabOrder = 8
   end
   object addGradesBtn: TButton
-    Left = 248
+    Left = 187
     Top = 201
     Width = 113
     Height = 25
     Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1086#1094#1077#1085#1082#1080
     TabOrder = 9
     OnClick = addGradesBtnClick
+  end
+  object saveBtn2: TButton
+    Left = 306
+    Top = 201
+    Width = 108
+    Height = 25
+    Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+    TabOrder = 10
+    OnClick = SaveBtnClick
   end
 end

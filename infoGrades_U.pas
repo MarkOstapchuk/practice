@@ -7,7 +7,7 @@ uses
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls,
   Vcl.NumberBox, Main_U;
 const
-  path = '..\..\assets\Subjects.txt';
+  path = 'Subjects.txt';
 
 type
   TSubjects = array of string;

@@ -5,6 +5,10 @@ object App: TApp
   ClientHeight = 440
   ClientWidth = 820
   Color = clBtnFace
+  Constraints.MaxHeight = 499
+  Constraints.MaxWidth = 836
+  Constraints.MinHeight = 499
+  Constraints.MinWidth = 836
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
@@ -102,7 +106,7 @@ object App: TApp
     OnClick = SearchStudentBtnClick
   end
   object GroupInfoBtn: TButton
-    Left = 368
+    Left = 369
     Top = 46
     Width = 129
     Height = 25

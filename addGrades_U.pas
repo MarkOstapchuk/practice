@@ -9,7 +9,7 @@ uses
   Vcl.ComCtrls, Main_U;
 
 const
-  path = '..\..\assets\Subjects.txt';
+  path = 'Subjects.txt';
 
 type
   TSubjects = array of string;
